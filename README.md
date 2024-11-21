@@ -51,6 +51,74 @@ To run the analysis, execute the notebooks in the following order:
 
 Simply open each notebook and run the cells in order to perform the analysis.
 
+## Training code
+
+In **Modelos_TFM.ipynb**:
+
+# Evaluar cada clasificador
+    for nombre_algoritmo, clasificador in classifiers.items():
+
+        tiempo_inicio = datetime.datetime.now()
+        
+        # GridSearchCV para modelos con hiperparámetros
+        if param_grids[nombre_algoritmo]:  
+            grid_search = GridSearchCV(
+                estimator=clasificador,
+                param_grid=param_grids[nombre_algoritmo],
+                scoring='accuracy',
+                cv=5,
+                n_jobs=-1,
+                return_train_score=True,
+                error_score='raise'
+            )
+
+            grid_search.fit(X_train, y_train)
+            mejor_modelo = grid_search.best_estimator_
+            mejores_params = grid_search.best_params_
+
+            mean_train_accuracy = np.mean(grid_search.cv_results_['mean_train_score'])
+            std_train_accuracy = np.std(grid_search.cv_results_['mean_train_score'])
+            mean_val_accuracy = np.mean(grid_search.cv_results_['mean_test_score'])
+            std_val_accuracy = np.std(grid_search.cv_results_['mean_test_score'])
+            
+        else:  
+            mejor_modelo = clasificador.fit(X_train, y_train)
+            mejores_params = "N/A"
+            mean_train_accuracy = accuracy_score(y_train, mejor_modelo.predict(X_train))
+            std_train_accuracy = 0
+            mean_val_accuracy = accuracy_score(y_test, mejor_modelo.predict(X_test))
+            std_val_accuracy = 0
+
+## Evaluation code
+
+In **Modelos_TFM.ipynb**:
+
+# Evaluación final en conjunto de prueba
+        predicciones_test = mejor_modelo.predict(X_test)
+        accuracy_test = accuracy_score(y_test, predicciones_test)
+        sensibilidad_test, especificidad_test = calcular_sensibilidad_especificidad_conjunto(y_test, predicciones_test)
+
+        # Cálculo de los valores SHAP
+        shap_df = calcular_shap_values(mejor_modelo, X_train, X_test, nombre_algoritmo)
+
+        # Agregar cada fila al conjunto de resultados
+        for idx, row in shap_df.iterrows():
+            resultados_totales.append({
+                'dataset': dataset,
+                'subset': subset,
+                'issue': issue,
+                'algorithm': nombre_algoritmo,
+                'best_params': mejores_params,
+                'mean_train_accuracy': mean_train_accuracy,
+                'std_train_accuracy': std_train_accuracy,
+                'mean_val_accuracy': mean_val_accuracy,
+                'std_val_accuracy': std_val_accuracy,
+                'accuracy_test': accuracy_test,
+                'sensitivity_test': sensibilidad_test,
+                'specificity_test': especificidad_test,
+                'shap_feature_values': row.to_dict()
+            })
+
 ## Model Performance
 
 Below is a summary of the performance of the best machine learning models for each category, including their training, validation, and test accuracies:
