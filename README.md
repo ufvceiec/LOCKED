@@ -1,4 +1,4 @@
-# TFM_Covid19
+# LOCKED Dataset
 
 ## Data Analysis Project
 
@@ -18,7 +18,7 @@ Follow these steps to set up the project in your local environment:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/username/project.git
+    git clone https://github.com/ufvceiec/Impact_of_the_Spanish_lockdown_during_COVID-19_on_psychological_conditions.git
     ```
 
 2. Create a virtual environment (optional but recommended):
@@ -45,9 +45,10 @@ Follow these steps to set up the project in your local environment:
 
 To run the analysis, execute the notebooks in the following order:
 
-1. **TFM_Preprocessing.ipynb**: Preprocess the data.
-2. **Modelos_TFM.ipynb**: Train the machine learning models.
-3. **GRAFICOS.ipynb**: Generate the visualizations.
+1. **Preprocessing.ipynb**: Preprocess the data.
+2. **label_Test.ipynb**: Create a labels.
+3. **Classification_models.ipynb**: Train the machine learning models.
+4. **Graphics.ipynb**: Generate the visualizations.
 
 Simply open each notebook and run the cells in order to perform the analysis.
 
@@ -55,7 +56,7 @@ Simply open each notebook and run the cells in order to perform the analysis.
 
 In **Modelos_TFM.ipynb**:
 
-# Evaluar cada clasificador
+    # Evaluar cada clasificador
     for nombre_algoritmo, clasificador in classifiers.items():
 
         tiempo_inicio = datetime.datetime.now()
@@ -93,7 +94,7 @@ In **Modelos_TFM.ipynb**:
 
 In **Modelos_TFM.ipynb**:
 
-# Evaluación final en conjunto de prueba
+        # Evaluación final en conjunto de prueba
         predicciones_test = mejor_modelo.predict(X_test)
         accuracy_test = accuracy_score(y_test, predicciones_test)
         sensibilidad_test, especificidad_test = calcular_sensibilidad_especificidad_conjunto(y_test, predicciones_test)
