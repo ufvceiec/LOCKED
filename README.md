@@ -54,7 +54,7 @@ Simply open each notebook and run the cells in order to perform the analysis.
 
 ## Training code
 
-In **Modelos_TFM.ipynb**:
+In **Classification_models.ipynb**:
 
     # Evaluar cada clasificador
     for nombre_algoritmo, clasificador in classifiers.items():
@@ -92,7 +92,7 @@ In **Modelos_TFM.ipynb**:
 
 ## Evaluation code
 
-In **Modelos_TFM.ipynb**:
+In **Classification_models.ipynb**:
 
         # Evaluación final en conjunto de prueba
         predicciones_test = mejor_modelo.predict(X_test)
